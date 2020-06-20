@@ -1,0 +1,27 @@
+{
+  "name": "delivery-much-challenge",
+  "version": "1.0.0",
+  "description": "Maycon's test for Delevery Much backend developer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayconb2/delivery-much-challenge.git"
+  },
+  "keywords": [
+    "backend",
+    "node"
+  ],
+  "author": "Maycon de Souza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mayconb2/delivery-much-challenge/issues"
+  },
+  "homepage": "https://github.com/mayconb2/delivery-much-challenge#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  }
+}
