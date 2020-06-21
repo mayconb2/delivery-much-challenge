@@ -3,11 +3,16 @@ const router = express.Router();
 const axios = require('axios');
 const dotenv = require('dotenv').config();
 
+const adjustTitle = require('./../helpers/adjustTitle.js')
+
 const app = express();
 
 app.use(express.json());
 
+//consts env
 const RECIPE_PUPPY_URL = process.env.RECIPE_PUPPY_URL;
+const GIPHY_URL = process.env.GIPHY_URL;
+const GIPHY_TOKEN = process.env.GIPHY_TOKEN; 
 const LIMIT = process.env.LIMIT;
 
 router.get('/', async (req,res) => {
@@ -28,10 +33,10 @@ router.get('/', async (req,res) => {
     const rowRecipes = await axios.get(`${RECIPE_PUPPY_URL}${reqIngredients}`);
     
     const recipesWithoutGiphy = rowRecipes.data.results.map(recipe => {
-        //todo: make it better
+        
         const {title,  ingredients, href} = recipe;
         
-        const newTitle = title.replace(/[\n\r]/g,'');
+        const newTitle = adjustTitle(title);
         
         return {
             title: newTitle, 
@@ -43,7 +48,7 @@ router.get('/', async (req,res) => {
     const recipesPromisse =  recipesWithoutGiphy.map(async recipe => {
         const {title, ingredients, link} = recipe;
     
-        const giphyResponse = await axios.get(`http://api.giphy.com/v1/gifs/search?api_key=7BwyiYfJ2KBrLcZhXBaQcsv6CVSp2vwy&q=${title}`);
+        const giphyResponse = await axios.get(`${GIPHY_URL}${GIPHY_TOKEN}&q=${title}`);
         const giphy = giphyResponse.data.data[0].images.downsized_large.url;
 
         resopnseRecipes.recipes.push({
@@ -57,8 +62,6 @@ router.get('/', async (req,res) => {
 
     Promise.all(recipesPromisse).then(() => {
         res.send(resopnseRecipes)
-        
-        console.log(resopnseRecipes)
     })
 
 })
