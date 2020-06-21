@@ -12,14 +12,31 @@ router.get('/', async (req,res) => {
     const LIMIT = 3; 
     const ingredientsArray = reqIngredients.split(',');
 
+    const resopnseRecipes = {
+        "keywords" : [...ingredientsArray],
+        "recipes" : []
+    };
+
     if (ingredientsArray.length > LIMIT) {
         res.status(400).send(`Error: too ingredients. Limit: ${LIMIT}`)
         return;
     }
 
-    const response = await axios.get(`http://www.recipepuppy.com/api/?i=${reqIngredients}&p=1`);
+    const rowRecipes = await axios.get(`http://www.recipepuppy.com/api/?i=${reqIngredients}&p=1`);
     
-    res.send(response.data)
+    const recipes = rowRecipes.data.results.map(recipe => {
+        const {title,  ingredients, href, thumbnail} = recipe;
+        return {
+            title: title, 
+            ingredients: ingredients,
+            link: href,
+            gif: thumbnail
+        }
+    });
+
+    resopnseRecipes.recipes = [...recipes]
+
+    res.send(resopnseRecipes)
 
 })
 
