@@ -24,11 +24,10 @@ router.get('/', async (req,res) => {
         res.status(414).send(`Error: too ingredients. Limit: ${LIMIT}`)
         return;
     }
-    console.log(process.env.RECIPE_PUPPY_URL)
 
     const rowRecipes = await axios.get(`${RECIPE_PUPPY_URL}${reqIngredients}`);
     
-    const recipes = rowRecipes.data.results.map(recipe => {
+    const recipesWithoutGiphy = rowRecipes.data.results.map(recipe => {
         //todo: make it better
         const {title,  ingredients, href} = recipe;
         
@@ -41,9 +40,26 @@ router.get('/', async (req,res) => {
         }
     });
 
-    resopnseRecipes.recipes = [...recipes]
+    const recipesPromisse =  recipesWithoutGiphy.map(async recipe => {
+        const {title, ingredients, link} = recipe;
+    
+        const giphyResponse = await axios.get(`http://api.giphy.com/v1/gifs/search?api_key=7BwyiYfJ2KBrLcZhXBaQcsv6CVSp2vwy&q=${title}`);
+        const giphy = giphyResponse.data.data[0].images.downsized_large.url;
 
-    res.send(resopnseRecipes)
+        resopnseRecipes.recipes.push({
+            title : title,
+            ingredients : ingredients,
+            link : link,
+            giphy : giphy
+        })
+
+    });
+
+    Promise.all(recipesPromisse).then(() => {
+        res.send(resopnseRecipes)
+        
+        console.log(resopnseRecipes)
+    })
 
 })
 
