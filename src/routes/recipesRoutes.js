@@ -31,7 +31,12 @@ router.get('/', async (req,res) => {
     }
 
     const rowRecipes = await axios.get(`${RECIPE_PUPPY_URL}${reqIngredients}`);
+
     
+    if(rowRecipes.status !== 200) {
+        return res.send({"Error": `the Recipe Puppy API return Status Code ${rowRecipes.status}` })
+    }
+
     const recipesWithoutGiphy = rowRecipes.data.results.map(recipe => {
         
         const {title,  ingredients, href} = recipe;
@@ -49,6 +54,11 @@ router.get('/', async (req,res) => {
         const {title, ingredients, link} = recipe;
     
         const giphyResponse = await axios.get(`${GIPHY_URL}${GIPHY_TOKEN}&q=${title}`);
+
+        if(giphyResponse.status !== 200) {
+            return res.send({"Error": `the Giphy API return Status Code ${giphyResponse.status}` })
+        }
+
         const giphy = giphyResponse.data.data[0].images.downsized_large.url;
 
         resopnseRecipes.recipes.push({
