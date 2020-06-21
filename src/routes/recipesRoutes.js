@@ -17,6 +17,10 @@ const LIMIT = process.env.LIMIT;
 
 router.get('/', async (req,res) => {
     
+    if (!req.query.i) {
+        return res.send('I hope you enjoy this API. See you soon :)')
+    }
+
     const reqIngredients = req.query.i;
     const ingredientsArray = reqIngredients.split(',').sort();
     
