@@ -3,12 +3,14 @@ const express = require('express');
 
 const app = express();
 
+const INTER_PORT = process.env.INTER_PORT;
+
 const recipesRouter = require('./routes/recipesRoutes.js');
 
 app.use(express.json());
 
 app.use('/recipes', recipesRouter);
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(INTER_PORT, () => {
+    console.log(`Server started on port ${INTER_PORT}`);
 })

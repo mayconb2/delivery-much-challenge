@@ -1,11 +1,7 @@
-const axios = require('axios');
 const adjustTitle = require('./../helpers/adjustTitle.js')
 const recipePuppyService = require('./../services/recipePuppyService.js')
 const giphyService = require('./../services/giphyService.js')
 
-//consts env
-const GIPHY_URL = process.env.GIPHY_URL;
-const GIPHY_TOKEN = process.env.GIPHY_TOKEN; 
 const LIMIT = process.env.LIMIT;
 
 async function recipesController(req, res) {
@@ -71,10 +67,7 @@ async function recipesController(req, res) {
     } catch (error) {
         res.status(400).send(error.message)
     }
-
     
-
-
 }
 
 module.exports = recipesController;
