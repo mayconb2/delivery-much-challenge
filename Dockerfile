@@ -8,7 +8,7 @@ COPY package.json /usr/app/
 
 ENV RECIPE_PUPPY_URL=http://www.recipepuppy.com/api/?i=
 ENV GIPHY_URL=http://api.giphy.com/v1/gifs/search?api_key=
-ENV GIPHY_TOKEN=7BwyiYfJ2KBrLcZhXBaQcsv6CVSp2vwy
+ENV GIPHY_TOKEN=SeuTokenAqui
 ENV LIMIT=3root@e1529bf44856:/app
 ENV INTER_PORT=3000
 
